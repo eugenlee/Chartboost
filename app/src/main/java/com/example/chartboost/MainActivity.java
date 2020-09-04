@@ -14,6 +14,8 @@ import com.chartboost.sdk.Privacy.model.GDPR;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String location = CBLocation.LOCATION_DEFAULT;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -24,15 +26,28 @@ public class MainActivity extends AppCompatActivity {
         Chartboost.addDataUseConsent(this, new CCPA(CCPA.CCPA_CONSENT.OPT_IN_SALE));
 
         Chartboost.startWithAppId( getApplicationContext() , getResources().getString(R.string.appId) , getResources().getString(R.string.appSignature));
-//      Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
     }
 
-    public void generateInterstitialAd(View view) {
-        Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
+    public void cacheInterstitialAd(View view) {
+        if (!Chartboost.hasInterstitial(location)) {
+            Chartboost.cacheInterstitial(location);
+        }
+        generateInterstitialAd();
     }
 
-    public void generateRvAd(View view) {
-        Chartboost.showRewardedVideo(CBLocation.LOCATION_DEFAULT);
+    public void cacheRvAd(View view) {
+        if (!Chartboost.hasRewardedVideo(location)) {
+            Chartboost.cacheRewardedVideo(location);
+        }
+        generateRvAd();
+    }
+
+    public void generateInterstitialAd() {
+        Chartboost.showInterstitial(location);
+    }
+
+    public void generateRvAd() {
+        Chartboost.showRewardedVideo(location);
     }
 
 }
